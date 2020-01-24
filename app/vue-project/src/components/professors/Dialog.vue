@@ -184,6 +184,7 @@ export default {
               }
             }
           }
+          
           .status-span-box-pc {
             text-align:center;
             .status-span-pc {
