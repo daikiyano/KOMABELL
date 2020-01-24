@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    
+    
+    <div> 
+      <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="全学部" name="all">全学部</el-tab-pane>
     <el-tab-pane label="仏教学部" name="buddhist">仏教学部</el-tab-pane>
     <el-tab-pane label="文学部" name="literature">文学部</el-tab-pane>
@@ -10,8 +13,12 @@
     <el-tab-pane label="医療健康科学部" name="sciences">医療健康科学部</el-tab-pane>
     <el-tab-pane label="GMS学部" name="gms">GMS学部</el-tab-pane>
   </el-tabs>
-    <div> 
-      <el-table :data="professors"
+  <el-input
+      v-model="search"
+      placeholder="教授を検索"
+    />
+      <el-table 
+      :data="professors.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
       :default-sort = "{prop: 'university_major', order: 'ascending'}"
       >
         <el-table-column
@@ -50,15 +57,27 @@
           </template>
         </el-table-column>         
         <el-table-column>
+          
           <template scope="scope">
+            
             <el-button type="success" :data="professors" plain @click="getProfessorDetail(scope.row.id); dialogVisible=true">More...</el-button>
           </template>
+         
+        
+     
         </el-table-column>
+        <el-table-column
+      align="right">
+      <template slot="header">
+       
+      </template>
+      </el-table-column>  
       </el-table> 
       <!-- Modal   -->
       <Dialog :dialogVisible="this.dialogVisible" :professor="this.professor" />
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -85,7 +104,9 @@ export default {
       ],
       professor : {},
       dialogVisible : false,
-      activeName: 'first'
+      activeName: 'first',
+      search: ''
+
      
       }
     },
@@ -98,9 +119,20 @@ export default {
         this.professor = data; 
       },
     handleClick(tab) {
+      this.dialogVisible = false
         console.log(tab.name);
-      }
+        if(tab.name === "buddhist") {
+          for (let i in this.professors) {
+            
+            let professor = this.professors[i]
+            console.log(professor);
+            // if (professor.university_major===1){
+            //   this.professors = professor
+            // }
+          }
+        }
     }
+    }  
 }
 </script>
 
