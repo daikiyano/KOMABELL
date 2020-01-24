@@ -83,7 +83,7 @@ export default {
         {id:6, name:"武田震源",university_major : 7, status:1},
         {id:7, name:"原直樹",university_major : 16, status:2},
       ],
-      professor : [],
+      professor : {},
       dialogVisible : false,
       activeName: 'first'
      

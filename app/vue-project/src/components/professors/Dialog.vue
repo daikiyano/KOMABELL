@@ -11,8 +11,8 @@
 
   <!-- PC -->
         <!-- <span slot="footer" class="dialog-footer"> -->
-        <el-row class="dialog-left-height hidden-sm-and-down">
-          <el-col :md="14" :lg="14"  class="dialog-left" v-bind:class="[professor.status===1 ? 'dialog-left-color-available' : '',professor.status===2 ? 'dialog-left-color-unavailable' : '',professor.status===3 ? 'dialog-left-color-meeting' : '']">
+        <el-row class="hidden-xs-only dialog-left-height">
+          <el-col  :sm="14" :md="14" :lg="14"  class="dialog-left" v-bind:class="[professor.status===1 ? 'dialog-left-color-available' : '',professor.status===2 ? 'dialog-left-color-unavailable' : '',professor.status===3 ? 'dialog-left-color-meeting' : '']">
               <el-row>
                 <!-- :gutter="20" -->
                 <el-col>
@@ -49,13 +49,13 @@
                 <span v-else-if="professor.university_major===15">医療健康科学部診療放射線技術科学学科</span>
                 <span v-else-if="professor.university_major===16">グローバルメディアスタディーズ学部グローバルメディアスタディーズ学科</span>  
                 <br>  
+               
                 {{professor.name}}
               </p>  
               </div>  
           </el-col>
-          <el-col  :md="10" :lg="10">
-            <div class="dialog-right-height-pc">
-              
+          <el-col :sm="10" :md="10" :lg="10">
+            <div class="dialog-right-height-pc"> 
               <p style="font-size: 80px;">{{time}}
               <p style="font-size: 30px; border-bottom: solid 2px black; display: inline-block;"><i class="el-icon-watch"></i>Today{{dayOfWeek}}
                 {{month}}
@@ -67,12 +67,11 @@
         </el-row>
 
 <!-- スマホ -->
-        <el-row class="hidden-md-and-up dialog-left-height-sm">
-          <el-col :xs="24" :sm="24">
-              <!-- v-bind:class="[professor.status===2 ? 'hey' : '']" -->
-              <span v-if="professor.status===1"><el-tag>利用可</el-tag></span>
-              <span v-else-if="professor.status===2"><el-tag type="info">退室中</el-tag></span>
-              <span v-else-if="professor.status===3"><el-tag type="danger">会議中</el-tag></span> 
+        <el-row class="hidden-sm-and-up dialog-left-height-sm">
+          <el-col :xs="24" :sm="24" v-bind:class="[professor.status===1 ? 'dialog-left-color-available' : '',professor.status===2 ? 'dialog-left-color-unavailable' : '',professor.status===3 ? 'dialog-left-color-meeting' : '']">
+              <span v-if="professor.status===1">利用可</span>
+              <span v-else-if="professor.status===2">退室中</span>
+              <span v-else-if="professor.status===3">会議中</span> 
                 {{professor.name}}
               <span v-if="professor.university_major===1">仏教学部禅学科</span>
               <span v-else-if="professor.university_major===2">文学部国文学科</span>
@@ -92,7 +91,7 @@
               <span v-else-if="professor.university_major===16">グローバルメディアスタディーズ学部グローバルメディアスタディーズ学科</span>        
           </el-col>
         </el-row>
-        <el-row class="hidden-md-and-up dialog-left-height-sm">
+        <el-row class="dialog-left-height-sm">
           <el-col :xs="24" :sm="24">
             {{time}}
             Today {{dayOfWeek}}
@@ -115,7 +114,7 @@ export default {
        required: true
     },
     'professor': {
-       type: Array,
+       type: Object,
        required: true
     }
   },
@@ -125,6 +124,7 @@ export default {
       dayOfWeek : "" ,
       month : "",
       date : "",
+      
       
     }
   },
@@ -209,9 +209,7 @@ export default {
           background-color:gray;
           .status-round-color-unavailable {
               background-color:#909399;   
-          }
-            
-          
+          }               
         }
     }
     .dialog-right-height-pc {
@@ -219,6 +217,7 @@ export default {
       text-align: center;
     }
 }
+
 
 
 </style>
