@@ -182,7 +182,6 @@ export default {
                 font-size:200px;
                 padding-top: 50px;
               }
-              
             }
           }
           .status-span-box-pc {
