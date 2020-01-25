@@ -15,8 +15,7 @@
     </el-submenu>
   </el-submenu>
   <el-menu-item index="3">About</el-menu-item>
-  <el-menu-item index="4">登録(教授・教員用)</el-menu-item>
-  <el-menu-item index="5">ログイン(教授・教員用)</el-menu-item>
+ 
 </el-menu>
 <div class="line"></div>
 

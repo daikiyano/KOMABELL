@@ -58,13 +58,9 @@
         </el-table-column>         
         <el-table-column>
           
-          <template scope="scope">
-            
+          <template scope="scope">   
             <el-button type="success" :data="professors" plain @click="getProfessorDetail(scope.row.id); dialogVisible=true">More...</el-button>
           </template>
-         
-        
-     
         </el-table-column>
         <el-table-column
       align="right">
@@ -97,7 +93,7 @@ export default {
         {id:1, name:"道重信",university_major : 1,status:2},
         {id:2, name:"田中勇",university_major : 2,status:1},
         {id:3, name:"伊藤尚広",university_major : 7,status:2},
-        {id:4, name:"山田隆",university_major : 4,status:1},
+        {id:4, name:"山田隆",university_major : 2,status:1},
         {id:5, name:"織田信正",university_major : 5,status:3},
         {id:6, name:"武田震源",university_major : 7, status:1},
         {id:7, name:"原直樹",university_major : 16, status:2},
@@ -121,16 +117,19 @@ export default {
     handleClick(tab) {
       this.dialogVisible = false
         console.log(tab.name);
-        if(tab.name === "buddhist") {
-          for (let i in this.professors) {
-            
-            let professor = this.professors[i]
-            console.log(professor);
-            // if (professor.university_major===1){
-            //   this.professors = professor
-            // }
-          }
-        }
+        // let self = this
+        // if(tab.name === "buddhist") {
+        //   for (let i in this.professors) {
+        //     let professor = self.professors[i]
+        //     // console.log(professor.university_major);
+        //     if (professor.university_major===1){
+        //      this.professors = self.professors.filter((v) => v.university_major === 1);
+        //       // this.professors.push(professor);
+        //     } else {
+        //       console.log(professor.university_major);
+        //     }
+        //   }
+        // }
     }
     }  
 }
