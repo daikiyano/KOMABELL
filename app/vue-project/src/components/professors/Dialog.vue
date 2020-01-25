@@ -7,6 +7,7 @@
         width="90%"
         top="8vh"
         custom-class="modal"
+        :before-close="hideModal"
       >   
 
   <!-- PC -->
@@ -97,6 +98,7 @@
             Today {{dayOfWeek}}
             {{month}}
             {{date}}th
+           
           </el-col>
         </el-row>
       </el-dialog>
@@ -104,7 +106,7 @@
   </div>
 </template>
 <script>
-// @ is an alias to /src
+/* eslint-disable no-console */
 
 export default {
   name: 'Dialog',
@@ -123,9 +125,7 @@ export default {
       time : "",
       dayOfWeek : "" ,
       month : "",
-      date : "",
-      
-      
+      date : ""
     }
   },
   methods:{
@@ -137,6 +137,9 @@ export default {
       this.dayOfWeek = [ "Sun,", "Mon,", "Tue,", "Wen,", "Thur,", "Fry,", "Sat," ][date];
       const month = today.getMonth();
       this.month = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'][month];
+    },
+    hideModal() {
+      this.$emit('changeVisivle', false)
     }
   },
   mounted () {
@@ -223,3 +226,5 @@ export default {
 
 </style>
 
+
+// #app > div.home > div > div > div:nth-child(4) > div > div > div.el-dialog__header > button
