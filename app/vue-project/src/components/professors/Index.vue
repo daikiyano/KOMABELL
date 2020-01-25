@@ -70,7 +70,9 @@
       </el-table-column>  
       </el-table> 
       <!-- Modal   -->
-      <Dialog :dialogVisible="this.dialogVisible" :professor="this.professor" />
+      <Dialog :dialogVisible="this.dialogVisible" :professor="this.professor" 
+      @changeVisivle="handler"
+      />
     </div>
   </div>
   
@@ -114,6 +116,9 @@ export default {
         ));
         this.professor = data; 
       },
+      handler(changeVisivle) {
+      this.dialogVisible = changeVisivle
+    },
     handleClick(tab) {
       this.dialogVisible = false
         console.log(tab.name);
