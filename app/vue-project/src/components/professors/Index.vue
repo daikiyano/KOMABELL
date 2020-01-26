@@ -118,24 +118,24 @@ export default {
       },
       handler(changeVisivle) {
       this.dialogVisible = changeVisivle
-    },
-    handleClick(tab) {
-      this.dialogVisible = false
-        console.log(tab.name);
-        // let self = this
-        // if(tab.name === "buddhist") {
-        //   for (let i in this.professors) {
-        //     let professor = self.professors[i]
-        //     // console.log(professor.university_major);
-        //     if (professor.university_major===1){
-        //      this.professors = self.professors.filter((v) => v.university_major === 1);
-        //       // this.professors.push(professor);
-        //     } else {
-        //       console.log(professor.university_major);
-        //     }
-        //   }
-        // }
-    }
+      },
+      handleClick(tab) {
+        let MajorCategory = []
+        for (let i in this.professors) {
+          let professor = this.professors[i]
+          if(tab.name === "buddhist") {
+            if (professor.university_major===1) {
+              MajorCategory.push(professor)
+            }
+          } else if (tab.name === "literature") {
+            if (professor.university_major===2) {
+              MajorCategory.push(professor)
+            }
+          }
+        }
+        this.professors.length = 0
+        this.professors = MajorCategory  
+      }
     }  
 }
 </script>

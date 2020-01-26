@@ -123,7 +123,7 @@ export default {
   data () {
     return {
       time : "",
-      dayOfWeek : "" ,
+      dayOfWeek : "",
       month : "",
       date : ""
     }
