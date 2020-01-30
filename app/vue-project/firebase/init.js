@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import firestore from 'firebase/firestore'
+import 'firebase/firestore'
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -13,7 +13,7 @@ var firebaseConfig = {
   };
   // Initialize Firebase
   const firebaseApp = firebase.initializeApp(firebaseConfig);
-//   firebaseApp.firestore().settings({timestampsInSnapshots: true })
+  // firebaseApp.firestore().settings({timestampsInSnapshots: true })
 
 
   //esport rebase 

@@ -82,7 +82,8 @@
 
 /* eslint-disable no-console */
 import Dialog from './Dialog.vue'
-// import db from '@/firebase/init'
+import db from '../../../firebase/init.js'
+
 
 export default {
     name: 'Index',
@@ -135,7 +136,16 @@ export default {
         this.professors.length = 0
         this.professors = MajorCategory  
       }
-    }  
+    },
+    created() {
+      
+      db.collection('professors').get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(doc.data())
+        })
+      })
+    }
 }
 </script>
 
