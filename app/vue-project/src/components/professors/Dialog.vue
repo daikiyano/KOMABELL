@@ -33,22 +33,22 @@
               </el-row>
               <div class="status-block">
               <p style="font-size: 30px;">
-                <span v-if="professor.university_major===1">仏教学部禅学科</span>
-                <span v-else-if="professor.university_major===2">文学部国文学科</span>
-                <span v-else-if="professor.university_major===3">文学部地理学科</span>
-                <span v-else-if="professor.university_major===4">文学部社会学科</span>
-                <span v-else-if="professor.university_major===5">文学部英米文学科</span>
-                <span v-else-if="professor.university_major===6">文学部歴史学科</span>
-                <span v-else-if="professor.university_major===7">文学部心理学科</span>
-                <span v-else-if="professor.university_major===8">経済学部経済学科</span>
-                <span v-else-if="professor.university_major===9">経済学部商学科</span>
-                <span v-else-if="professor.university_major===10">経済学部現代応用経済学科</span>
-                <span v-else-if="professor.university_major===11">法学部法律学科</span>
-                <span v-else-if="professor.university_major===12">法学部政治学科</span>
-                <span v-else-if="professor.university_major===13">経営学部経営学科</span>
-                <span v-else-if="professor.university_major===14">経営学部市場戦略学科</span>
-                <span v-else-if="professor.university_major===15">医療健康科学部診療放射線技術科学学科</span>
-                <span v-else-if="professor.university_major===16">グローバルメディアスタディーズ学部グローバルメディアスタディーズ学科</span>  
+                <span v-if="professor.major===1">仏教学部禅学科</span>
+                <span v-else-if="professor.major===2">文学部国文学科</span>
+                <span v-else-if="professor.major===3">文学部地理学科</span>
+                <span v-else-if="professor.major===4">文学部社会学科</span>
+                <span v-else-if="professor.major===5">文学部英米文学科</span>
+                <span v-else-if="professor.major===6">文学部歴史学科</span>
+                <span v-else-if="professor.major===7">文学部心理学科</span>
+                <span v-else-if="professor.major===8">経済学部経済学科</span>
+                <span v-else-if="professor.major===9">経済学部商学科</span>
+                <span v-else-if="professor.major===10">経済学部現代応用経済学科</span>
+                <span v-else-if="professor.major===11">法学部法律学科</span>
+                <span v-else-if="professor.major===12">法学部政治学科</span>
+                <span v-else-if="professor.major===13">経営学部経営学科</span>
+                <span v-else-if="professor.major===14">経営学部市場戦略学科</span>
+                <span v-else-if="professor.major===15">医療健康科学部診療放射線技術科学学科</span>
+                <span v-else-if="professor.major===16">グローバルメディアスタディーズ学部グローバルメディアスタディーズ学科</span>  
                 <br>  
                
                 {{professor.name}}
@@ -74,22 +74,22 @@
               <span v-else-if="professor.status===2">退室中</span>
               <span v-else-if="professor.status===3">会議中</span> 
                 {{professor.name}}
-              <span v-if="professor.university_major===1">仏教学部禅学科</span>
-              <span v-else-if="professor.university_major===2">文学部国文学科</span>
-              <span v-else-if="professor.university_major===3">文学部地理学科</span>
-              <span v-else-if="professor.university_major===4">文学部社会学科</span>
-              <span v-else-if="professor.university_major===5">文学部英米文学科</span>
-              <span v-else-if="professor.university_major===6">文学部歴史学科</span>
-              <span v-else-if="professor.university_major===7">文学部心理学科</span>
-              <span v-else-if="professor.university_major===8">経済学部経済学科</span>
-              <span v-else-if="professor.university_major===9">経済学部商学科</span>
-              <span v-else-if="professor.university_major===10">経済学部現代応用経済学科</span>
-              <span v-else-if="professor.university_major===11">法学部法律学科</span>
-              <span v-else-if="professor.university_major===12">法学部政治学科</span>
-              <span v-else-if="professor.university_major===13">経営学部経営学科</span>
-              <span v-else-if="professor.university_major===14">経営学部市場戦略学科</span>
-              <span v-else-if="professor.university_major===15">医療健康科学部診療放射線技術科学学科</span>
-              <span v-else-if="professor.university_major===16">グローバルメディアスタディーズ学部グローバルメディアスタディーズ学科</span>        
+              <span v-if="professor.major===1">仏教学部禅学科</span>
+              <span v-else-if="professor.major===2">文学部国文学科</span>
+              <span v-else-if="professor.major===3">文学部地理学科</span>
+              <span v-else-if="professor.major===4">文学部社会学科</span>
+              <span v-else-if="professor.major===5">文学部英米文学科</span>
+              <span v-else-if="professor.major===6">文学部歴史学科</span>
+              <span v-else-if="professor.major===7">文学部心理学科</span>
+              <span v-else-if="professor.major===8">経済学部経済学科</span>
+              <span v-else-if="professor.major===9">経済学部商学科</span>
+              <span v-else-if="professor.major===10">経済学部現代応用経済学科</span>
+              <span v-else-if="professor.major===11">法学部法律学科</span>
+              <span v-else-if="professor.major===12">法学部政治学科</span>
+              <span v-else-if="professor.major===13">経営学部経営学科</span>
+              <span v-else-if="professor.major===14">経営学部市場戦略学科</span>
+              <span v-else-if="professor.major===15">医療健康科学部診療放射線技術科学学科</span>
+              <span v-else-if="professor.major===16">グローバルメディアスタディーズ学部グローバルメディアスタディーズ学科</span>        
           </el-col>
         </el-row>
         <el-row class="dialog-left-height-sm">
@@ -123,7 +123,7 @@ export default {
   data () {
     return {
       time : "",
-      dayOfWeek : "" ,
+      dayOfWeek : "",
       month : "",
       date : ""
     }
@@ -227,4 +227,3 @@ export default {
 </style>
 
 
-// #app > div.home > div > div > div:nth-child(4) > div > div > div.el-dialog__header > button

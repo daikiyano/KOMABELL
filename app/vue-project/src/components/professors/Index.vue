@@ -19,29 +19,29 @@
     />
       <el-table 
       :data="professors.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-      :default-sort = "{prop: 'university_major', order: 'ascending'}"
+      :default-sort = "{prop: 'major', order: 'ascending'}"
       >
         <el-table-column
-          prop="university_major"
+          prop="major"
           label="学部学科"
         >
           <template scope="scope">
-            <span v-if="scope.row.university_major===1">仏教学部禅学科</span>
-            <span v-else-if="scope.row.university_major===2">文学部国文学科</span>
-            <span v-else-if="scope.row.university_major===3">文学部地理学科</span>
-            <span v-else-if="scope.row.university_major===4">文学部社会学科</span>
-            <span v-else-if="scope.row.university_major===5">文学部英米文学科</span>
-            <span v-else-if="scope.row.university_major===6">文学部歴史学科</span>
-            <span v-else-if="scope.row.university_major===7">文学部心理学科</span>
-            <span v-else-if="scope.row.university_major===8">経済学部経済学科</span>
-            <span v-else-if="scope.row.university_major===9">経済学部商学科</span>
-            <span v-else-if="scope.row.university_major===10">経済学部現代応用経済学科</span>
-            <span v-else-if="scope.row.university_major===11">法学部法律学科</span>
-            <span v-else-if="scope.row.university_major===12">法学部政治学科</span>
-            <span v-else-if="scope.row.university_major===13">経営学部経営学科</span>
-            <span v-else-if="scope.row.university_major===14">経営学部市場戦略学科</span>
-            <span v-else-if="scope.row.university_major===15">医療健康科学部診療放射線技術科学学科</span>
-            <span v-else-if="scope.row.university_major===16">GMS学部GMS学科</span>
+            <span v-if="scope.row.major===1">仏教学部禅学科/仏教学科</span>
+            <span v-else-if="scope.row.major===2">文学部国文学科</span>
+            <span v-else-if="scope.row.major===3">文学部地理学科</span>
+            <span v-else-if="scope.row.major===4">文学部社会学科</span>
+            <span v-else-if="scope.row.major===5">文学部英米文学科</span>
+            <span v-else-if="scope.row.major===6">文学部歴史学科</span>
+            <span v-else-if="scope.row.major===7">文学部心理学科</span>
+            <span v-else-if="scope.row.major===8">経済学部経済学科</span>
+            <span v-else-if="scope.row.major===9">経済学部商学科</span>
+            <span v-else-if="scope.row.major===10">経済学部現代応用経済学科</span>
+            <span v-else-if="scope.row.major===11">法学部法律学科</span>
+            <span v-else-if="scope.row.major===12">法学部政治学科</span>
+            <span v-else-if="scope.row.major===13">経営学部経営学科</span>
+            <span v-else-if="scope.row.major===14">経営学部市場戦略学科</span>
+            <span v-else-if="scope.row.major===15">医療健康科学部診療放射線技術科学学科</span>
+            <span v-else-if="scope.row.major===16">GMS学部GMS学科</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -82,6 +82,8 @@
 
 /* eslint-disable no-console */
 import Dialog from './Dialog.vue'
+import db from '../../../firebase/init.js'
+
 
 export default {
     name: 'Index',
@@ -92,20 +94,18 @@ export default {
       return {
         //   Get Data From Firebase
           professors : [
-        {id:1, name:"道重信",university_major : 1,status:2},
-        {id:2, name:"田中勇",university_major : 2,status:1},
-        {id:3, name:"伊藤尚広",university_major : 7,status:2},
-        {id:4, name:"山田隆",university_major : 2,status:1},
-        {id:5, name:"織田信正",university_major : 5,status:3},
-        {id:6, name:"武田震源",university_major : 7, status:1},
-        {id:7, name:"原直樹",university_major : 16, status:2},
+        {id:1, name:"道重信",first_furigana: "", last_furigana: "",major : 1,major_group : 1,status:2},
+        {id:2, name:"田中勇",first_furigana: "", last_furigana: "",major : 2,major_group : 2,status:1},
+        {id:3, name:"伊藤尚広",first_furigana: "", last_furigana: "",major : 7,major_group : 2,status:2},
+        {id:4, name:"山田隆",first_furigana: "", last_furigana: "",major : 2,major_group : 2,status:1},
+        {id:5, name:"織田信正",first_furigana: "", last_furigana: "",major : 5,major_group : 2,status:3},
+        {id:6, name:"武田震源",first_furigana: "", last_furigana: "",major : 7,major_group : 2, status:1},
+        {id:7, name:"原直樹",first_furigana: "", last_furigana: "",major : 16,major_group : 7, status:2},
       ],
       professor : {},
       dialogVisible : false,
       activeName: 'first',
       search: ''
-
-     
       }
     },
     methods:{
@@ -118,25 +118,34 @@ export default {
       },
       handler(changeVisivle) {
       this.dialogVisible = changeVisivle
+      },
+      handleClick(tab) {
+        let MajorCategory = []
+        for (let i in this.professors) {
+          let professor = this.professors[i]
+          if(tab.name === "buddhist") {
+            if (professor.major===1) {
+              MajorCategory.push(professor)
+            }
+          } else if (tab.name === "literature") {
+            if (professor.major===2) {
+              MajorCategory.push(professor)
+            }
+          }
+        }
+        this.professors.length = 0
+        this.professors = MajorCategory  
+      }
     },
-    handleClick(tab) {
-      this.dialogVisible = false
-        console.log(tab.name);
-        // let self = this
-        // if(tab.name === "buddhist") {
-        //   for (let i in this.professors) {
-        //     let professor = self.professors[i]
-        //     // console.log(professor.university_major);
-        //     if (professor.university_major===1){
-        //      this.professors = self.professors.filter((v) => v.university_major === 1);
-        //       // this.professors.push(professor);
-        //     } else {
-        //       console.log(professor.university_major);
-        //     }
-        //   }
-        // }
+    created() {
+      
+      db.collection('professors').get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(doc.data())
+        })
+      })
     }
-    }  
 }
 </script>
 
