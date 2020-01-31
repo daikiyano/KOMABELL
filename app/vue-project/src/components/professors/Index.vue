@@ -5,13 +5,13 @@
     <div> 
       <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="全学部" name="all">全学部</el-tab-pane>
-    <el-tab-pane label="仏教学部" name="buddhist">仏教学部</el-tab-pane>
-    <el-tab-pane label="文学部" name="literature">文学部</el-tab-pane>
-    <el-tab-pane label="経済学部" name="economics">経済学部</el-tab-pane>
-    <el-tab-pane label="法学部" name="law">法学部</el-tab-pane>
-    <el-tab-pane label="経営学部" name="business">経営学部</el-tab-pane>
-    <el-tab-pane label="医療健康科学部" name="sciences">医療健康科学部</el-tab-pane>
-    <el-tab-pane label="GMS学部" name="gms">GMS学部</el-tab-pane>
+    <el-tab-pane label="仏教学部" name="1">仏教学部</el-tab-pane>
+    <el-tab-pane label="文学部" name="2">文学部</el-tab-pane>
+    <el-tab-pane label="経済学部" name="3">経済学部</el-tab-pane>
+    <el-tab-pane label="法学部" name="4">法学部</el-tab-pane>
+    <el-tab-pane label="経営学部" name="5">経営学部</el-tab-pane>
+    <el-tab-pane label="医療健康科学部" name="6">医療健康科学部</el-tab-pane>
+    <el-tab-pane label="GMS学部" name="7">GMS学部</el-tab-pane>
   </el-tabs>
   <el-input
       v-model="search"
@@ -94,13 +94,13 @@ export default {
       return {
         //   Get Data From Firebase
           professors : [
-        {id:1, name:"道重信",first_furigana: "", last_furigana: "",major : 1,major_group : 1,status:2},
-        {id:2, name:"田中勇",first_furigana: "", last_furigana: "",major : 2,major_group : 2,status:1},
-        {id:3, name:"伊藤尚広",first_furigana: "", last_furigana: "",major : 7,major_group : 2,status:2},
-        {id:4, name:"山田隆",first_furigana: "", last_furigana: "",major : 2,major_group : 2,status:1},
-        {id:5, name:"織田信正",first_furigana: "", last_furigana: "",major : 5,major_group : 2,status:3},
-        {id:6, name:"武田震源",first_furigana: "", last_furigana: "",major : 7,major_group : 2, status:1},
-        {id:7, name:"原直樹",first_furigana: "", last_furigana: "",major : 16,major_group : 7, status:2},
+        // {id:1, name:"道重信",first_furigana: "", last_furigana: "",major : 1,major_group : 1,status:2},
+        // {id:2, name:"田中勇",first_furigana: "", last_furigana: "",major : 2,major_group : 2,status:1},
+        // {id:3, name:"伊藤尚広",first_furigana: "", last_furigana: "",major : 7,major_group : 2,status:2},
+        // {id:4, name:"山田隆",first_furigana: "", last_furigana: "",major : 2,major_group : 2,status:1},
+        // {id:5, name:"織田信正",first_furigana: "", last_furigana: "",major : 5,major_group : 2,status:3},
+        // {id:6, name:"武田震源",first_furigana: "", last_furigana: "",major : 7,major_group : 2, status:1},
+        // {id:7, name:"原直樹",first_furigana: "", last_furigana: "",major : 16,major_group : 7, status:2},
       ],
       professor : {},
       dialogVisible : false,
@@ -110,9 +110,8 @@ export default {
     },
     methods:{
       getProfessorDetail(id) {
-        const dataId = parseInt(id,10);
         const data = this.professors.find(professor => (
-          professor.id === dataId  
+          professor.id === id  
         ));
         this.professor = data; 
       },
@@ -120,29 +119,37 @@ export default {
       this.dialogVisible = changeVisivle
       },
       handleClick(tab) {
-        let MajorCategory = []
-        for (let i in this.professors) {
-          let professor = this.professors[i]
-          if(tab.name === "buddhist") {
-            if (professor.major===1) {
-              MajorCategory.push(professor)
-            }
-          } else if (tab.name === "literature") {
-            if (professor.major===2) {
-              MajorCategory.push(professor)
-            }
-          }
+        if(tab.name === "all"){
+          db.collection('professors').get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              let professor = doc.data()
+              professor.id = doc.id
+              this.professors.push(professor)
+            })
+          })
+        } else {
+          const majorGroup = parseInt(tab.name,10);
+          let ref = db.collection('professors').where('major_group', '==',majorGroup)
+          ref.get().then(snapshot => {
+            snapshot.forEach(doc => {
+              let professor = doc.data()
+              professor.id = doc.id
+              this.professors.length = 0
+              this.professors.push(professor)
+            })
+          })
         }
-        this.professors.length = 0
-        this.professors = MajorCategory  
       }
     },
-    created() {
-      
+    created() {    
       db.collection('professors').get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          console.log(doc.data())
+          let professor = doc.data()
+          professor.id = doc.id
+          this.professors.push(professor)
+         
         })
       })
     }
