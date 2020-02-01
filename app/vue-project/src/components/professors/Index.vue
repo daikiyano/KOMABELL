@@ -86,14 +86,13 @@ import db from '../../../firebase/init.js'
 
 
 export default {
-    name: 'Index',
-    components: {
-      Dialog,
-    }, 
-    data () {
-      return {
-        //   Get Data From Firebase
-          professors : [
+  name: 'Index',
+  components: {
+    Dialog,
+  }, 
+  data () {
+    return {
+      professors : [
         // {id:1, name:"道重信",first_furigana: "", last_furigana: "",major : 1,major_group : 1,status:2},
         // {id:2, name:"田中勇",first_furigana: "", last_furigana: "",major : 2,major_group : 2,status:1},
         // {id:3, name:"伊藤尚広",first_furigana: "", last_furigana: "",major : 7,major_group : 2,status:2},
@@ -106,53 +105,53 @@ export default {
       dialogVisible : false,
       activeName: 'first',
       search: ''
-      }
+    }
+  },
+  methods:{
+    getProfessorDetail(id) {
+      const data = this.professors.find(professor => (
+        professor.id === id  
+      ));
+      this.professor = data; 
     },
-    methods:{
-      getProfessorDetail(id) {
-        const data = this.professors.find(professor => (
-          professor.id === id  
-        ));
-        this.professor = data; 
-      },
-      handler(changeVisivle) {
+    handler(changeVisivle) {
       this.dialogVisible = changeVisivle
-      },
-      handleClick(tab) {
-        if(tab.name === "all"){
-          db.collection('professors').get()
-          .then(snapshot => {
-            snapshot.forEach(doc => {
-              let professor = doc.data()
-              professor.id = doc.id
-              this.professors.push(professor)
-            })
-          })
-        } else {
-          const majorGroup = parseInt(tab.name,10);
-          let ref = db.collection('professors').where('major_group', '==',majorGroup)
-          ref.get().then(snapshot => {
-            snapshot.forEach(doc => {
-              let professor = doc.data()
-              professor.id = doc.id
-              this.professors.length = 0
-              this.professors.push(professor)
-            })
-          })
-        }
-      }
     },
-    created() {    
-      db.collection('professors').get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
+    handleClick(tab) {
+      if(tab.name === "all") {
+        this.professors.length = 0
+        db.collection('professors').get()  
+        .then(snapshot => {
+          snapshot.forEach(doc => {
           let professor = doc.data()
           professor.id = doc.id
           this.professors.push(professor)
-         
         })
       })
+      } else {
+        const majorGroup = parseInt(tab.name,10);
+        let ref = db.collection('professors').where('major_group', '==',majorGroup)
+        ref.get().then(snapshot => {
+          snapshot.forEach(doc => {
+            let professor = doc.data()
+            professor.id = doc.id
+            this.professors.length = 0
+            this.professors.push(professor)
+          })
+        })
+      }
     }
+  },
+  created() {    
+    db.collection('professors').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+      let professor = doc.data()
+      professor.id = doc.id
+      this.professors.push(professor)    
+      })
+    })
+  }
 }
 </script>
 
