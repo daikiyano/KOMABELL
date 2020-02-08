@@ -59,7 +59,7 @@
         <el-table-column>
           
           <template scope="scope">   
-            <el-button type="success" :data="professors" plain @click="getProfessorDetail(scope.row.id); dialogVisible=true">More...</el-button>
+            <el-button type="success" size="mini" :data="professors" plain @click="getProfessorDetail(scope.row.id); dialogVisible=true">More...</el-button>
           </template>
         </el-table-column>
         <el-table-column
