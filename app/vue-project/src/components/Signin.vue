@@ -1,9 +1,9 @@
 <template>
   <div class="signin">
     <h2>Sign in</h2>
-    <el-input placeholder="Please input" v-model="password"></el-input>
+    <el-input placeholder="Please input" v-model="username"></el-input>
     <el-input placeholder="Please input password" v-model="password" show-password></el-input>
-    <button>Signin</button>
+    <button @click="signIn">Signin</button>
     <p>You don't have an account?
       <router-link to="/signup">create account now!!</router-link>
     </p>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 export default {
   name: 'Signin',
   data() {
@@ -19,7 +20,19 @@ export default {
       password: ''
     }
   },
-  methods: {}
+  methods: {
+    signIn: function () {
+      firebase.auth().signInWithEmailAndPassword(this.username, this.password).then(
+        user => {// eslint-disable-line
+          alert('Success!')
+          this.$router.push('/')
+        },
+        err => {
+          alert(err.message)
+        }
+      )
+    }
+  }
 }
 </script>
 
