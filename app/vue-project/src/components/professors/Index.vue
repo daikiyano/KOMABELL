@@ -83,6 +83,7 @@
 /* eslint-disable no-console */
 import Dialog from './Dialog.vue'
 import db from '../../../firebase/init.js'
+import firebase from 'firebase'
 
 
 export default {
@@ -143,6 +144,8 @@ export default {
     }
   },
   created() {    
+      let currentUser = firebase.auth().currentUser
+      console.log(currentUser.uid)
     db.collection('professors').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
