@@ -72,6 +72,7 @@
       <!-- Modal   -->
       <Dialog :dialogVisible="this.dialogVisible" :professor="this.professor" 
       @changeVisivle="handler"
+      @changeStatus="changeStatus"
       />
     </div>
   </div>
@@ -118,6 +119,57 @@ export default {
     handler(changeVisivle) {
       this.dialogVisible = changeVisivle
     },
+    changeStatus() {
+      let currentUser = firebase.auth().currentUser
+      console.log(currentUser.uid)
+      console.log(this.professor)
+      let count = this.professor.status
+      if (count === 3) {
+        count = 1
+        this.professor.status = count
+        count += 1
+      } else {
+        count += 1
+        this.professor.status = count
+      }
+      
+      //  db.collection('professors').where('user_id','==',currentUser.uid)
+      //  .onSnapshot(function(snapshot) {
+      //   snapshot.docChanges().forEach(function(change) {
+      //        console.log(change.doc.id)
+      //        console.log(change.type)
+             
+             
+      //        if (change.type === "added") {
+      //         console.log(change.type)
+      //         db.collection('professors').doc(change.doc.id).update({
+      //        status : 1
+      //      })
+      //       }
+      //       if (change.type === "modified") {
+      //         console.log(change.type)
+      //         db.collection('professors').doc(change.doc.id).update({
+      //        status : 1
+      //      })
+      //       }
+            
+      //   });
+    // });
+      //  .then(snapshot => {
+      //    snapshot.forEach((doc) => {
+      //      console.log(doc.id)
+      //      db.collection('professors').doc(doc.id).update({
+      //        this.professors.status : 1
+      //      })
+      //    })
+      //  })
+       
+      //  .catch(err => {
+      //     console.log(err)
+      //         })
+  
+
+    },
     handleClick(tab) {
       if(tab.name === "all") {
         this.professors.length = 0
@@ -145,7 +197,7 @@ export default {
   },
   created() {    
       let currentUser = firebase.auth().currentUser
-      console.log(currentUser.uid)
+      console.log(currentUser)
     db.collection('professors').get()
     .then(snapshot => {
       snapshot.forEach(doc => {

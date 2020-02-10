@@ -18,7 +18,7 @@
                 <!-- :gutter="20" -->
                 <el-col>
                   <!-- :offset="4" -->
-                  <div class="status-block">
+                  <div class="status-block" v-on:click="tap">
                     <el-avatar :size="350" class="status-round" v-bind:class="[professor.status===1 ? 'status-round-color-available' : '',professor.status===2 ? 'status-round-color-unavailable' : '',professor.status===3 ? 'status-round-color-meeting' : '']">
                       <i v-if="professor.status===1" class="el-icon-user"></i>
                       <i v-if="professor.status===2" class="el-icon-user"></i>
@@ -59,7 +59,7 @@
           <el-col :sm="10" :md="10" :lg="10">
             <div class="dialog-right-height-pc"> 
               <p style="font-size: 80px;">{{time}}
-              <p style="font-size: 30px; border-bottom: solid 2px black; display: inline-block;"><i class="el-icon-watch"></i>Today{{dayOfWeek}}
+              <p style="font-size: 30px; border-bottom: solid 2px black; display: inline-block; text-align: center;"><i class="el-icon-watch"></i>Today{{dayOfWeek}}
                 {{month}}
                 {{date}}th
                 
@@ -163,6 +163,11 @@ export default {
     },
     hideModal() {
       this.$emit('changeVisivle', false)
+    },
+    tap() {
+      console.log("hey")
+      this.$emit('changeStatus')
+      
     }
   },
   mounted () {
@@ -227,6 +232,7 @@ $sp: 767px;  // スマホ
           .status-block {
             display: flex; 
             justify-content: center;
+            padding-top: -20px;
             .status-round {
               margin-top: 60px;
               
@@ -269,6 +275,8 @@ $sp: 767px;  // スマホ
     .dialog-right-height-pc {
       height:100%;
       text-align: center;
+      position: relative;
+      left: -20px;
     }
 }
 
