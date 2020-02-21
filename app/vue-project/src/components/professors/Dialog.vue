@@ -18,7 +18,7 @@
                 <!-- :gutter="20" -->
                 <el-col>
                   <!-- :offset="4" -->
-                  <div class="status-block" v-on:click="tap">
+                  <div class="status-block" v-on:click="clickStatus">
                     <el-avatar :size="350" class="status-round" v-bind:class="[professor.status===1 ? 'status-round-color-available' : '',professor.status===2 ? 'status-round-color-unavailable' : '',professor.status===3 ? 'status-round-color-meeting' : '']">
                       <i v-if="professor.status===1" class="el-icon-user"></i>
                       <i v-if="professor.status===2" class="el-icon-user"></i>
@@ -76,7 +76,7 @@
                 <!-- :gutter="20" -->
                 <el-col style="height: 260px;">
                   <!-- :offset="4" -->
-                  <div class="status-block-sm">
+                  <div class="status-block-sm" v-on:click="clickStatus">
                     <el-avatar :size="200" class="status-round-sm" v-bind:class="[professor.status===1 ? 'status-round-color-available-sm' : '',professor.status===2 ? 'status-round-color-unavailable-sm' : '',professor.status===3 ? 'status-round-color-meeting-sm' : '']">
                       <i v-if="professor.status===1" class="el-icon-user"></i>
                       <i v-if="professor.status===2" class="el-icon-user"></i>
@@ -164,10 +164,8 @@ export default {
     hideModal() {
       this.$emit('changeVisivle', false)
     },
-    tap() {
-      console.log("hey")
+    clickStatus() {
       this.$emit('changeStatus')
-      
     }
   },
   mounted () {

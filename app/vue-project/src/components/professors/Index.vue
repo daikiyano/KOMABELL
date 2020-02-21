@@ -17,6 +17,7 @@
       v-model="search"
       placeholder="教授を検索"
     />
+    <el-main style="width:90%; margin: 0 auto;">
       <el-table 
       :data="professors.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
       :default-sort = "{prop: 'major', order: 'ascending'}"
@@ -58,7 +59,10 @@
         </el-table-column>         
         <el-table-column>
           
+          <i class="el-icon-info"></i>
+
           <template scope="scope">   
+            
             <el-button type="success" size="mini" :data="professors" plain @click="getProfessorDetail(scope.row.id); dialogVisible=true">More...</el-button>
           </template>
         </el-table-column>
@@ -69,6 +73,7 @@
       </template>
       </el-table-column>  
       </el-table> 
+     </el-main>
       <!-- Modal   -->
       <Dialog :dialogVisible="this.dialogVisible" :professor="this.professor" 
       @changeVisivle="handler"
@@ -124,37 +129,34 @@ export default {
       console.log(currentUser.uid)
       console.log(this.professor)
       let count = this.professor.status
-      if (count === 3) {
-        count = 1
-        this.professor.status = count
-        count += 1
-      } else {
-        count += 1
-        this.professor.status = count
+      if(currentUser) {
+        if (count === 3) {
+          count = 1
+          this.professor.status = count
+          count += 1
+        } else {
+          count += 1
+          this.professor.status = count
+        }
+        let self = this
+        db.collection('professors').where('user_id','==',currentUser.uid)
+        .onSnapshot(function(snapshot) {
+          snapshot.docChanges().forEach(function(change) {
+            if (change.type === "added") {
+              console.log(change.type)
+              db.collection('professors').doc(change.doc.id).update({
+                status : self.professor.status
+              })
+            }
+            if (change.type === "modified") {
+              console.log(change.type)
+              db.collection('professors').doc(change.doc.id).update({
+                status : self.professor.status
+              })
+            } 
+          });
+        });
       }
-      
-      //  db.collection('professors').where('user_id','==',currentUser.uid)
-      //  .onSnapshot(function(snapshot) {
-      //   snapshot.docChanges().forEach(function(change) {
-      //        console.log(change.doc.id)
-      //        console.log(change.type)
-             
-             
-      //        if (change.type === "added") {
-      //         console.log(change.type)
-      //         db.collection('professors').doc(change.doc.id).update({
-      //        status : 1
-      //      })
-      //       }
-      //       if (change.type === "modified") {
-      //         console.log(change.type)
-      //         db.collection('professors').doc(change.doc.id).update({
-      //        status : 1
-      //      })
-      //       }
-            
-      //   });
-    // });
       //  .then(snapshot => {
       //    snapshot.forEach((doc) => {
       //      console.log(doc.id)
