@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    
+     <loading :active.sync="isLoading"></loading>
     
     <div> 
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -19,6 +19,7 @@
     />
     <el-main style="width:90%; margin: 0 auto;">
       <el-table 
+     
       :data="professors.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
       :default-sort = "{prop: 'major', order: 'ascending'}"
       >
@@ -75,7 +76,7 @@
       </el-table> 
      </el-main>
       <!-- Modal   -->
-      <Dialog :dialogVisible="this.dialogVisible" :professor="this.professor" 
+      <Dialog :dialogVisible="this.dialogVisible" :innerVisible="this.innerVisible" :professor="this.professor" 
       @changeVisivle="handler"
       @changeStatus="changeStatus"
       />
@@ -90,12 +91,16 @@
 import Dialog from './Dialog.vue'
 import db from '../../../firebase/init.js'
 import firebase from 'firebase'
-
+// Import component
+    import Loading from 'vue-loading-overlay';
+    // Import stylesheet
+    import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: 'Index',
   components: {
     Dialog,
+    Loading
   }, 
   data () {
     return {
@@ -110,8 +115,10 @@ export default {
       ],
       professor : {},
       dialogVisible : false,
+      innerVisible: false,
       activeName: 'first',
-      search: ''
+      search: '',
+      isLoading: false
     }
   },
   methods:{
@@ -124,6 +131,7 @@ export default {
     handler(changeVisivle) {
       this.dialogVisible = changeVisivle
     },
+   
     changeStatus() {
       let currentUser = firebase.auth().currentUser
       console.log(currentUser.uid)
@@ -157,23 +165,11 @@ export default {
           });
         });
       }
-      //  .then(snapshot => {
-      //    snapshot.forEach((doc) => {
-      //      console.log(doc.id)
-      //      db.collection('professors').doc(doc.id).update({
-      //        this.professors.status : 1
-      //      })
-      //    })
-      //  })
-       
-      //  .catch(err => {
-      //     console.log(err)
-      //         })
-  
-
     },
     handleClick(tab) {
+      
       if(tab.name === "all") {
+        this.isLoading = true;
         this.professors.length = 0
         db.collection('professors').get()  
         .then(snapshot => {
@@ -182,8 +178,11 @@ export default {
           professor.id = doc.id
           this.professors.push(professor)
         })
+        this.isLoading = false;
       })
+      
       } else {
+        this.isLoading = true;
         const majorGroup = parseInt(tab.name,10);
         let ref = db.collection('professors').where('major_group', '==',majorGroup)
         ref.get().then(snapshot => {
@@ -193,13 +192,15 @@ export default {
             this.professors.length = 0
             this.professors.push(professor)
           })
-        })
+          this.isLoading = false;
+        }) 
       }
     }
   },
-  created() {    
+  created() {   
       let currentUser = firebase.auth().currentUser
       console.log(currentUser)
+      this.isLoading = true;
     db.collection('professors').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
@@ -207,7 +208,9 @@ export default {
       professor.id = doc.id
       this.professors.push(professor)    
       })
+      this.isLoading = false
     })
+   
   }
 }
 </script>
@@ -219,7 +222,9 @@ $lg: 1200px;
 $md: 992px; 
 $sm: 768px; 
 
-
+body {
+    margin: 0;
+  }
 
 
 
