@@ -30,5 +30,7 @@ export default {
 
 
 <style>
-
+html {
+background-color: rgba(0, 0, 0, 0);
+}
 </style>
