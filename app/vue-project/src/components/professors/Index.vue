@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    
+     <loading :active.sync="isLoading"></loading>
     
     <div> 
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -17,7 +17,9 @@
       v-model="search"
       placeholder="教授を検索"
     />
+    <el-main style="width:90%; margin: 0 auto;">
       <el-table 
+     
       :data="professors.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
       :default-sort = "{prop: 'major', order: 'ascending'}"
       >
@@ -58,7 +60,10 @@
         </el-table-column>         
         <el-table-column>
           
+          <i class="el-icon-info"></i>
+
           <template scope="scope">   
+            
             <el-button type="success" size="mini" :data="professors" plain @click="getProfessorDetail(scope.row.id); dialogVisible=true">More...</el-button>
           </template>
         </el-table-column>
@@ -69,9 +74,11 @@
       </template>
       </el-table-column>  
       </el-table> 
+     </el-main>
       <!-- Modal   -->
-      <Dialog :dialogVisible="this.dialogVisible" :professor="this.professor" 
+      <Dialog :dialogVisible="this.dialogVisible" :innerVisible="this.innerVisible" :professor="this.professor" 
       @changeVisivle="handler"
+      @changeStatus="changeStatus"
       />
     </div>
   </div>
@@ -83,12 +90,17 @@
 /* eslint-disable no-console */
 import Dialog from './Dialog.vue'
 import db from '../../../firebase/init.js'
-
+import firebase from 'firebase'
+// Import component
+    import Loading from 'vue-loading-overlay';
+    // Import stylesheet
+    import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: 'Index',
   components: {
     Dialog,
+    Loading
   }, 
   data () {
     return {
@@ -103,8 +115,10 @@ export default {
       ],
       professor : {},
       dialogVisible : false,
+      innerVisible: false,
       activeName: 'first',
-      search: ''
+      search: '',
+      isLoading: false
     }
   },
   methods:{
@@ -117,8 +131,45 @@ export default {
     handler(changeVisivle) {
       this.dialogVisible = changeVisivle
     },
+   
+    changeStatus() {
+      let currentUser = firebase.auth().currentUser
+      console.log(currentUser.uid)
+      console.log(this.professor)
+      let count = this.professor.status
+      if(currentUser) {
+        if (count === 3) {
+          count = 1
+          this.professor.status = count
+          count += 1
+        } else {
+          count += 1
+          this.professor.status = count
+        }
+        let self = this
+        db.collection('professors').where('user_id','==',currentUser.uid)
+        .onSnapshot(function(snapshot) {
+          snapshot.docChanges().forEach(function(change) {
+            if (change.type === "added") {
+              console.log(change.type)
+              db.collection('professors').doc(change.doc.id).update({
+                status : self.professor.status
+              })
+            }
+            if (change.type === "modified") {
+              console.log(change.type)
+              db.collection('professors').doc(change.doc.id).update({
+                status : self.professor.status
+              })
+            } 
+          });
+        });
+      }
+    },
     handleClick(tab) {
+      
       if(tab.name === "all") {
+        this.isLoading = true;
         this.professors.length = 0
         db.collection('professors').get()  
         .then(snapshot => {
@@ -127,8 +178,11 @@ export default {
           professor.id = doc.id
           this.professors.push(professor)
         })
+        this.isLoading = false;
       })
+      
       } else {
+        this.isLoading = true;
         const majorGroup = parseInt(tab.name,10);
         let ref = db.collection('professors').where('major_group', '==',majorGroup)
         ref.get().then(snapshot => {
@@ -138,11 +192,15 @@ export default {
             this.professors.length = 0
             this.professors.push(professor)
           })
-        })
+          this.isLoading = false;
+        }) 
       }
     }
   },
-  created() {    
+  created() {   
+      let currentUser = firebase.auth().currentUser
+      console.log(currentUser)
+      this.isLoading = true;
     db.collection('professors').get()
     .then(snapshot => {
       snapshot.forEach(doc => {
@@ -150,7 +208,9 @@ export default {
       professor.id = doc.id
       this.professors.push(professor)    
       })
+      this.isLoading = false
     })
+   
   }
 }
 </script>
@@ -162,7 +222,9 @@ $lg: 1200px;
 $md: 992px; 
 $sm: 768px; 
 
-
+body {
+    margin: 0;
+  }
 
 
 

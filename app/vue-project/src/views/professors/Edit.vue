@@ -1,18 +1,15 @@
 <template>
-  <div id="app">
-
-    <NavBar/>
-    <router-view/>
-
+  <div class="home">
+    <ProfessorEdit/>
   </div>
 </template>
 <script>
 // @ is an alias to /src
-import NavBar from '@/components/NavBar.vue'
+import ProfessorEdit from '@/components/professors/Edit.vue'
 
 export default {
   components: {
-    NavBar,
+    ProfessorEdit
   },
   data () {
     return {
@@ -27,10 +24,3 @@ export default {
 
 
 </script>
-
-
-<style>
-html {
-background-color: rgba(0, 0, 0, 0);
-}
-</style>

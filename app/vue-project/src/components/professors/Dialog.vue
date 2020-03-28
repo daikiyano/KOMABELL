@@ -9,6 +9,7 @@
         custom-class="modal"
         :before-close="hideModal"
       >   
+  
 
   <!-- PC -->
         <!-- <span slot="footer" class="dialog-footer"> -->
@@ -18,7 +19,7 @@
                 <!-- :gutter="20" -->
                 <el-col>
                   <!-- :offset="4" -->
-                  <div class="status-block">
+                  <div class="status-block" v-on:click="clickStatus">
                     <el-avatar :size="350" class="status-round" v-bind:class="[professor.status===1 ? 'status-round-color-available' : '',professor.status===2 ? 'status-round-color-unavailable' : '',professor.status===3 ? 'status-round-color-meeting' : '']">
                       <i v-if="professor.status===1" class="el-icon-user"></i>
                       <i v-if="professor.status===2" class="el-icon-user"></i>
@@ -53,20 +54,36 @@
                 <br>  
                
                 {{professor.name}}
+
               </p>  
               </div>  
           </el-col>
           <el-col :sm="10" :md="10" :lg="10">
             <div class="dialog-right-height-pc"> 
-              <p style="font-size: 80px;">{{time}}
-              <p style="font-size: 30px; border-bottom: solid 2px black; display: inline-block;"><i class="el-icon-watch"></i>Today{{dayOfWeek}}
+              <p style="font-size: 30px; border-bottom: solid 2px black; display: inline-block; text-align: center;">
+                <el-button type="success" round @click="innerVisible = true"><i class="el-icon-message-solid"></i>Add Schedule</el-button><br>
+                <i class="el-icon-watch"></i>Today{{dayOfWeek}}
                 {{month}}
-                {{date}}th
-                
+                {{date}}th<br>
               </p>
+              <div class="block">
+                <el-timeline :reverse="reverse">
+                  <el-timeline-item
+                    v-for="(activity, index) in activities"
+                    :key="index"
+                    :timestamp="activity.timestamp">
+                    {{activity.content}}
+                  </el-timeline-item>
+                </el-timeline>
+                </div>
             </div>
           </el-col>
         </el-row>
+
+        <!-- <Dialog :dialogVisible="this.dialogVisible" 
+      @changeVisivle="handler"
+      @changeStatus="changeStatus"
+      /> -->
 
 <!-- スマホ -->
         <el-row class="hidden-sm-and-up dialog-left-height-sm">
@@ -76,7 +93,7 @@
                 <!-- :gutter="20" -->
                 <el-col style="height: 260px;">
                   <!-- :offset="4" -->
-                  <div class="status-block-sm">
+                  <div class="status-block-sm" v-on:click="clickStatus">
                     <el-avatar :size="200" class="status-round-sm" v-bind:class="[professor.status===1 ? 'status-round-color-available-sm' : '',professor.status===2 ? 'status-round-color-unavailable-sm' : '',professor.status===3 ? 'status-round-color-meeting-sm' : '']">
                       <i v-if="professor.status===1" class="el-icon-user"></i>
                       <i v-if="professor.status===2" class="el-icon-user"></i>
@@ -116,7 +133,6 @@
         <el-row class="hidden-sm-and-up dialog-left-height-sm">
           <el-col :xs="24" :sm="24">
             <div class="dialog-right-height-sm"> 
-            <p style="font-size: 30px;">{{time}}</p>
              <p style="font-size: 20px; border-bottom: solid 2px black; display: inline-block;"><i class="el-icon-watch"></i>Today {{dayOfWeek}}
             {{month}}
             {{date}}th
@@ -148,7 +164,18 @@ export default {
       time : "",
       dayOfWeek : "",
       month : "",
-      date : ""
+      date : "",
+      reverse: true,
+        activities: [{
+          content: 'Event start',
+          timestamp: '20:30:00'
+        }, {
+          content: 'Approved',
+          timestamp: '05:30:00'
+        }, {
+          content: 'Success',
+          timestamp: '07:30:00'
+        }]
     }
   },
   methods:{
@@ -163,6 +190,9 @@ export default {
     },
     hideModal() {
       this.$emit('changeVisivle', false)
+    },
+    clickStatus() {
+      this.$emit('changeStatus')
     }
   },
   mounted () {
@@ -227,6 +257,7 @@ $sp: 767px;  // スマホ
           .status-block {
             display: flex; 
             justify-content: center;
+            padding-top: -20px;
             .status-round {
               margin-top: 60px;
               
@@ -269,6 +300,8 @@ $sp: 767px;  // スマホ
     .dialog-right-height-pc {
       height:100%;
       text-align: center;
+      position: relative;
+      left: -20px;
     }
 }
 

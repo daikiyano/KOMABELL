@@ -12,6 +12,9 @@
 
 
 <script>
+/* eslint-disable no-console */
+import db from '../../firebase/init.js'
+
 import firebase from 'firebase'
 export default {
   name: 'Signup',
@@ -24,20 +27,27 @@ export default {
   methods: {
     signUp: function () {
       firebase.auth().createUserWithEmailAndPassword(this.username, this.password)
-        .then(user => {
-          alert('Create account:', user.email)
+        .then(cred => {
+          console.log(cred.user.uid)
+          db.collection('professors').add({
+            name: "daiki yano",
+            user_id: cred.user.uid,
+            major: 2,
+            major_group : 3,
+            status:2
         })
         .catch(error => {
           alert(error.message)
         })
-    }
+    })
   }
+}
 }
 </script>
 
 <style scoped>
 h1, h2 {
-  font-weigh: normal;
+  font-weight: normal;
 }
 ul{
   list-style-type: none;

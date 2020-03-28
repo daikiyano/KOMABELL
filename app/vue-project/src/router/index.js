@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Show from '../views/Show.vue'
+// import Show from '../views/Show.vue'
+import ProfessorEdit from '../views/professors/Edit.vue'
 import Signup from '@/components/Signup.vue'
 import Signin from '@/components/Signin.vue'
 import firebase from 'firebase'
@@ -19,10 +20,15 @@ const routes = [
     name: 'home',
     component: Home
   },
+  // {
+  //   path: '/professor/:id',
+  //   name: 'show',
+  //   component: Show
+  // },
   {
     path: '/professor/:id',
-    name: 'show',
-    component: Show
+    name: 'ProfessorEdit',
+    component: ProfessorEdit
   },
   {
     path: '/about',
